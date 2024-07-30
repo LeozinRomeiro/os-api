@@ -1,0 +1,17 @@
+{
+  "db": {
+    "user": "sa",
+    "password": "Leoadmin32@#$",
+    "server": "localhost",
+    "database": "os-db",
+    "options": {
+      "encrypt": true,
+      "enableArithAbort": true,
+      "trustServerCertificate": true
+    },
+    "port": 1433
+  },
+  "server": {
+    "port": 3000
+  }
+}

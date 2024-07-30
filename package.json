@@ -9,6 +9,8 @@
   "author": "Leonardo Romeiro, Carlos Eduardo & Lucas Mantovani",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "config": "^3.3.12",
+    "express": "^4.19.2",
+    "mssql": "^11.0.1"
   }
 }
