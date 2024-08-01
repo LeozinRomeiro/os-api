@@ -1,7 +1,7 @@
 {
   "db": {
     "user": "sa",
-    "password": "Carlos321#@",
+    "password": "Carlos321#",
     "server": "localhost",
     "database": "os-db",
     "options": {
