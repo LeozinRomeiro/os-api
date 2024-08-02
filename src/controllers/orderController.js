@@ -1,9 +1,9 @@
-const Order = require('../models/order');
+const Ordem = require('../models/order');
 
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.getAll();
-    res.json(orders);
+    const ordens = await Ordem.getAll();
+    res.json(ordens);
   } catch (err) {
     res.status(500).send('Erro no servidor');
   }
@@ -11,9 +11,9 @@ exports.getAllOrders = async (req, res) => {
 
 exports.createOrder = async (req, res) => {
   try {
-    const order = new Order(req.body);
-    await Order.create(order);
-    res.status(201).send(order);
+    const Ordem = new Order(req.body);
+    await Ordem.create(Ordem);
+    res.status(201).send(Ordem);
   } catch (err) {
     res.status(500).send('Erro no servidor');
   }

@@ -1,10 +1,10 @@
 const { sql, poolPromise } = require('../config/db');
 
-class User {
-    constructor(user){
-        this.id = user.id
-        this.name = user.name;
-        this.password = user.password;
+class Usuario {
+    constructor(Usuario){
+        this.id = Usuario.id
+        this.name = Usuario.name;
+        this.password = Usuario.password;
     }
 
     static async getById(){
@@ -18,4 +18,4 @@ class User {
     }
 }
 
-module.exports = User;
+module.exports =  Usuario;

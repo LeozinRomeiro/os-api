@@ -1,11 +1,11 @@
 const { sql, poolPromise } = require('../config/db');
 
-class Order {
-  constructor(order) {
-    this.idAtividade = order.idAtividade;
-    this.idCliente = order.idCliente;
-    this.idPeriodo = order.idPeriodo;
-    this.idTecnico = order.idTecnico;
+class Ordem {
+  constructor(ordem) {
+    this.idAtividade = ordem.idAtividade;
+    this.idCliente = ordem.idCliente;
+    this.idPeriodo = ordem.idPeriodo;
+    this.idTecnico = ordem.idTecnico;
     this.dataHora = new Date();
   }
 
@@ -36,4 +36,4 @@ class Order {
   }
 }
 
-module.exports = Order;
+module.exports = Ordem;
