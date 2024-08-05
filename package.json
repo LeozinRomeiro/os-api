@@ -1,8 +1,8 @@
 {
   "name": "os-api",
   "version": "1.0.0",
-  "description": "api node.js com mongoDb para gerar ordens de servico",
-  "main": "index.js",
+  "description": "api node.js com sqlserver para gerar ordens de servico",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
