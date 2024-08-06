@@ -5,7 +5,7 @@ const config = require('config');
 
 class AuthService{
     async login(dto){
-        const usuario = Usuario.getById();
+        const usuario = await Usuario.getById();
 
         if (!usuario) {
             throw new Error('Usuario não encontrado');

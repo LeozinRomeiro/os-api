@@ -62,7 +62,8 @@ const createTables = async () => {
     BEGIN
         CREATE TABLE Usuario (
             UsuarioID INT PRIMARY KEY IDENTITY(1,1),
-            Senha VARCHAR(50),
+            Nome VARCHAR(50),
+            Senha VARCHAR(100),
             Email VARCHAR(50),
         );
     END
