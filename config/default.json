@@ -1,8 +1,8 @@
 {
   "db": {
     "user": "sa",
-    "password": "Leoadmin32@#$",
-    "server": "localhost",
+    "password": "12345",
+    "server": "CARLOS-PC",
     "database": "os-db",
     "options": {
       "encrypt": true,

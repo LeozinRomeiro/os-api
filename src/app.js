@@ -13,7 +13,7 @@ const orderRoutes = require('./routes/orderRoutes');
 app.use('/api/ordens', orderRoutes);
 //app.use('/api/usuarios', userRoutes);
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}...`)
 });
