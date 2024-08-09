@@ -1,9 +1,9 @@
 {
   "db": {
-    "user": "sa",
-    "password": "12345",
-    "server": "CARLOS-PC",
-    "database": "os-db",
+    "user": "usuario",
+    "password": "senha",
+    "server": "estanciaOuIp",
+    "database": "estanciaOuIp",
     "options": {
       "encrypt": true,
       "enableArithAbort": true,

@@ -15,6 +15,7 @@ build/
 
 # Configurações do ambiente
 .env
+default.json
 
 # Sistema operacional
 .DS_Store
