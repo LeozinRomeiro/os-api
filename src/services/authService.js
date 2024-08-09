@@ -1,17 +1,17 @@
-const Usuario = require('../models/user');
+const Usuario = require('../models/usuario');
 const { compare } = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 const config = require('config');
 
 class AuthService{
     async login(dto){
-        const usuario = Usuario.getById();
+        const usuario = await Usuario.getByEmail(dto.email);
 
         if (!usuario) {
             throw new Error('Usuario não encontrado');
         }
 
-        const authenticated = await compare(dto.password, usuario.password);
+        const authenticated = await compare(dto.senha, usuario.Senha);
 
         if (!authenticated) {
             throw new Error('Usuario ou senha incorreto');

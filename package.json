@@ -1,8 +1,8 @@
 {
   "name": "os-api",
   "version": "1.0.0",
-  "description": "api node.js com mongoDb para gerar ordens de servico",
-  "main": "index.js",
+  "description": "api node.js com sqlserver para gerar ordens de servico",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,7 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.3.12",
     "express": "^4.19.2",
+    "express-validator": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "mssql": "^11.0.1"
   }
