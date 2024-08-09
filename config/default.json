@@ -2,7 +2,11 @@
   "db": {
     "user": "sa",
     "password": "12345",
+<<<<<<< HEAD
     "server": "DESKTOP-6A29SOJ",
+=======
+    "server": "localhost",
+>>>>>>> 810fe6abf13b7277687f2673992192283024d7ed
     "database": "os-db",
     "options": {
       "encrypt": true,
