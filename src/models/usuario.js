@@ -8,12 +8,23 @@ class Usuario {
         this.senha = Usuario.senha;
     }
 
+    static async get() {
+        try {
+            const pool = await poolPromise;
+            const result = await pool.request()
+                .query('SELECT * FROM [Usuario]');
+            return result.recordset;
+        } catch (error) {
+            console.error('SQL error:', error);
+        }
+    }
+
     static async getById(id) {
         try {
             const pool = await poolPromise;
             const result = await pool.request()
                 .input('id', sql.Int, id)
-                .query('SELECT * FROM [Usuario] WHERE Id = @id');
+                .query('SELECT * FROM [Usuario] WHERE UsuarioId = @id');
             return result.recordset[0];
         } catch (error) {
             console.error('SQL error:', error);
@@ -54,7 +65,7 @@ class Usuario {
                 .input('nome', sql.NVarChar, Usuario.nome)
                 .input('email', sql.NVarChar, Usuario.email)
                 .input('senha', sql.NVarChar, Usuario.senha)
-                .query('UPDATE [Usuario] SET Nome = @nome, Email = @email, Senha = @senha WHERE id = @id');
+                .query('UPDATE [Usuario] SET Nome = @nome, Email = @email, Senha = @senha WHERE UsuarioId = @id');
             return result.rowsAffected;
         } catch (error) {
             console.error('SQL error:', error);
@@ -66,7 +77,7 @@ class Usuario {
             const pool = await poolPromise;
             const result = await pool.request()
                 .input('id', sql.Int, id)
-                .query('DELETE FROM [Usuario] WHERE Id = @id');
+                .query('DELETE FROM [Usuario] WHERE UsuarioId = @id');
             return result.rowsAffected;
         } catch (error) {
             console.error('SQL error:', error);
