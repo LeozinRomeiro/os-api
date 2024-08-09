@@ -19,6 +19,16 @@ class Order {
     }
   }
 
+  static async getById() {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request();
+    }
+    catch (err) {
+    console.log(err);
+  }
+  }
+
   static async create(orderData) {
     try {
       const pool = await poolPromise;
