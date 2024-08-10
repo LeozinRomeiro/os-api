@@ -34,9 +34,9 @@ const createTables = async () => {
         );
     END
 
-    IF OBJECT_ID('Atividades', 'U') IS NULL
+    IF OBJECT_ID('Atividade', 'U') IS NULL
     BEGIN
-        CREATE TABLE Atividades (
+        CREATE TABLE Atividade (
             AtividadeID INT PRIMARY KEY IDENTITY(1,1),
             Nome VARCHAR(255) NOT NULL,
             Descricao TEXT
@@ -72,7 +72,7 @@ const createTables = async () => {
 
     await pool.request().query(createOrdensTable);
     
-    console.log('Tabela Ordens criada com sucesso!');
+    console.log('Tabelas criadas com sucesso!');
   } catch (err) {
     console.error('Erro ao criar tabelas:', err);
   }
