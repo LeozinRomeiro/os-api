@@ -1,6 +1,13 @@
 const express = require('express');
+const comunicacaoFront = require('cors');
 const app = express();
 require('./config/initDB');
+
+app.use(comunicacaoFront({
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
