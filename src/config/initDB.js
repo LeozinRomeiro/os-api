@@ -4,8 +4,8 @@ const createTables = async () => {
   try {
     const pool = await poolPromise;
     
-    const createOrdensTable = `
-    -- Verifica se a tabela Clientes não existe e cria a tabela
+    const criarTabelas = `
+    -- Verifica se as tabelas não existe e cria as mesmas
     IF OBJECT_ID('Clientes', 'U') IS NULL
     BEGIN
         CREATE TABLE Clientes (
@@ -15,9 +15,9 @@ const createTables = async () => {
         );
     END
 
-    IF OBJECT_ID('Funcionários', 'U') IS NULL
+    IF OBJECT_ID('Funcionarios', 'U') IS NULL
     BEGIN
-        CREATE TABLE Funcionários (
+        CREATE TABLE Funcionarios (
             FuncionarioID INT PRIMARY KEY IDENTITY(1,1),
             Nome VARCHAR(255) NOT NULL,
             CPF CHAR(11) NOT NULL UNIQUE
@@ -43,18 +43,30 @@ const createTables = async () => {
         );
     END
 
+    IF OBJECT_ID('Periodo', 'U') IS NULL
+    BEGIN
+        CREATE TABLE Periodo (
+            PeriodoID INT PRIMARY KEY IDENTITY(1,1),
+            DataInicio DATE NOT NULL,
+            DataFim DATE NOT NULL,
+            TempoTotal TEXT NOT NULL
+        );
+    END
+
     IF OBJECT_ID('OrdemDeServico', 'U') IS NULL
     BEGIN
         CREATE TABLE OrdemDeServico (
             OrdemID INT PRIMARY KEY IDENTITY(1,1),
             ProjetoID INT,
+            ClienteID INT,
             FuncionarioID INT,
-            Data DATE NOT NULL,
             AtividadeID INT,
-            Complemento TEXT,
-            FOREIGN KEY (ProjetoID) REFERENCES Projetos(ProjetoID),
-            FOREIGN KEY (FuncionarioID) REFERENCES Funcionários(FuncionarioID),
-            FOREIGN KEY (AtividadeID) REFERENCES Atividades(AtividadeID)
+            PeriodoID INT,
+            FOREIGN KEY (PeriodoID) REFERENCES Periodo(PeriodoID),
+            FOREIGN KEY (ProjetoID) REFERENCES Projeto(ProjetoID),
+            FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID),
+            FOREIGN KEY (FuncionarioID) REFERENCES Funcionario(FuncionarioID),
+            FOREIGN KEY (AtividadeID) REFERENCES Atividade(AtividadeID)
         );
     END
 
@@ -70,9 +82,9 @@ const createTables = async () => {
 
     `;
 
-    await pool.request().query(createOrdensTable);
+    await pool.request().query(criarTabelas);
     
-    console.log('Tabela Ordens criada com sucesso!');
+    console.log('Tabelas criadas com sucesso!');
   } catch (err) {
     console.error('Erro ao criar tabelas:', err);
   }
