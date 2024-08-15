@@ -2,7 +2,7 @@
   "db": {
     "user": "sa",
     "password": "12345",
-    "server": "DESKTOP-6A29SOJ",
+    "server": "CARLOS-PC",
     "database": "os-db",
     "options": {
       "encrypt": true,
