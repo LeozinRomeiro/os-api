@@ -13,11 +13,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const authRoutes = require('./routes/authRoutes');
-const orderRoutes = require('./routes/orderRoutes');
+const ordemRoutes = require('./routes/ordemRoutes');
 const usuarioRoute = require('./routes/usuarioRoute');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/ordens', orderRoutes);
+app.use('/api/ordens', ordemRoutes);
 app.use('/api/usuarios', usuarioRoute);
 
 const port = 3000;
