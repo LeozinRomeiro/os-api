@@ -2,8 +2,8 @@
   "db": {
     "user": "usuario",
     "password": "senha",
-    "server": "estanciaOuIp",
-    "database": "estanciaOuIp",
+    "server": "instanciaOuIp",
+    "database": "instanciaOuIp",
     "options": {
       "encrypt": true,
       "enableArithAbort": true,
