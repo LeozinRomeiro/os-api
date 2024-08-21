@@ -1,9 +1,16 @@
 {
   "db": {
+<<<<<<< HEAD
     "user": "usuario",
     "password": "senha",
-    "server": "estanciaOuIp",
-    "database": "estanciaOuIp",
+    "server": "instanciaOuIp",
+    "database": "instanciaOuIp",
+=======
+    "user": "sa",
+    "password": "12345",
+    "server": "CARLOS-PC",
+    "database": "os-db",
+>>>>>>> 30866d88ce37ce9f245d7df150e2a8f8d4132be5
     "options": {
       "encrypt": true,
       "enableArithAbort": true,
