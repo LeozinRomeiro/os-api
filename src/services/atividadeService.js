@@ -26,6 +26,20 @@ class AtividadeService{
         }
     }
 
+    async buscarPorNome(descricao) {
+        try {
+            const atividade = await data.getByName(descricao);
+
+            if (!atividade) {
+                throw new Error('Atividade não encontrado.');
+            }
+
+            return atividade;
+        } catch (error) {
+            throw new Error('Erro ao buscar atividade: ' + error.message);
+        }
+    }
+
     async cadastrar(atv){
 
         try {

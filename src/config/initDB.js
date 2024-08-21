@@ -54,7 +54,7 @@ const createTables = async () => {
             Complemento TEXT,
             FOREIGN KEY (ProjetoID) REFERENCES Projetos(ProjetoID),
             FOREIGN KEY (FuncionarioID) REFERENCES Funcionários(FuncionarioID),
-            FOREIGN KEY (AtividadeID) REFERENCES Atividades(AtividadeID)
+            FOREIGN KEY (AtividadeID) REFERENCES Atividade(AtividadeID)
         );
     END
 

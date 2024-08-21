@@ -11,7 +11,7 @@ class Atividade {
         try {
             const pool = await poolPromise;
             const result = await pool.request()
-                .query('SELECT * FROM [Atividades]');
+                .query('SELECT * FROM [Atividade]');
             return result.recordset;
         } catch (error) {
             console.error('SQL error:', error);
@@ -24,6 +24,18 @@ class Atividade {
             const result = await pool.request()
                 .input('id', sql.Int, id)
                 .query('SELECT * FROM [Atividade] WHERE AtividadeId = @id');
+            return result.recordset[0];
+        } catch (error) {
+            console.error('SQL error:', error);
+        }
+    }
+
+    static async getByName(descricao) {
+        try {
+            const pool = await poolPromise;
+            const result = await pool.request()
+                .input('descricao', sql.Char, descricao)
+                .query('SELECT * FROM [Atividade] WHERE Descricao like @descricao');
             return result.recordset[0];
         } catch (error) {
             console.error('SQL error:', error);
@@ -50,7 +62,7 @@ class Atividade {
                 .input('id', sql.Int, Atividade.id)
                 .input('nome', sql.NVarChar, Atividade.nome)
                 .input('descricao', sql.NVarChar, Atividade.descricao)
-                .query('update [Atividade] set Nome = @nome, descricao = @email where AtividadeId = @id');
+                .query('update [Atividade] set Nome = @nome, descricao = @descricao where AtividadeId = @id');
             return result.rowsAffected;
         } catch (error) {
             console.error('SQL error:', error);
