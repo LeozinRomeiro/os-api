@@ -67,7 +67,7 @@ const iniciarBanco = async (gerarDados) => {
             FOREIGN KEY (ProjetoID) REFERENCES Projetos(ProjetoID),
             FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
             FOREIGN KEY (FuncionarioID) REFERENCES Funcionarios(FuncionarioID),
-            FOREIGN KEY (AtividadeID) REFERENCES Atividades(AtividadeID)
+            FOREIGN KEY (AtividadeID) REFERENCES Atividade(AtividadeID)
         );
     END
 
@@ -128,19 +128,19 @@ const iniciarBanco = async (gerarDados) => {
         INSERT INTO Projetos (Nome, ClienteID) VALUES ('Portal de Obras para Construtora Construa Mais', 10);
     END
 
-    -- Verificar e inserir dados na tabela Atividades
-    IF NOT EXISTS (SELECT * FROM Atividades)
+    -- Verificar e inserir dados na tabela Atividade
+    IF NOT EXISTS (SELECT * FROM Atividade)
     BEGIN
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Desenvolvimento de Front-end', 'Criação da interface visual do projeto');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Desenvolvimento de Back-end', 'Implementação da lógica e regras de negócio');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Design Gráfico', 'Criação de artes e layouts');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Análise de Requisitos', 'Levantamento e análise de necessidades do cliente');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Teste de Software', 'Testes para garantir a qualidade do sistema');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Documentação', 'Escrita de documentos técnicos e manuais');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Manutenção', 'Correção de bugs e melhorias');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Suporte Técnico', 'Atendimento e resolução de problemas');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Gestão de Projetos', 'Coordenação e acompanhamento do projeto');
-        INSERT INTO Atividades (Nome, Descricao) VALUES ('Treinamento', 'Capacitação dos usuários no uso do sistema');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Desenvolvimento de Front-end', 'Criação da interface visual do projeto');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Desenvolvimento de Back-end', 'Implementação da lógica e regras de negócio');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Design Gráfico', 'Criação de artes e layouts');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Análise de Requisitos', 'Levantamento e análise de necessidades do cliente');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Teste de Software', 'Testes para garantir a qualidade do sistema');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Documentação', 'Escrita de documentos técnicos e manuais');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Manutenção', 'Correção de bugs e melhorias');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Suporte Técnico', 'Atendimento e resolução de problemas');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Gestão de Projetos', 'Coordenação e acompanhamento do projeto');
+        INSERT INTO Atividade (Nome, Descricao) VALUES ('Treinamento', 'Capacitação dos usuários no uso do sistema');
     END
 
     -- Verificar e inserir dados na tabela Periodo
