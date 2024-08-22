@@ -1,4 +1,5 @@
 const data = require('../models/usuario')
+const dataSequelize = require('../models/usuarioSequelize')
 const { hash } = require('bcryptjs')
 
 class UsuarioService{
@@ -40,7 +41,8 @@ class UsuarioService{
 
     async buscarPorId(id) {
         try {
-            const usuario = await data.getById(id);
+            //const usuario = await data.getById(id);
+            const usuario = await dataSequelize.findByPk(id);
 
             if (!usuario) {
                 throw new Error('Usuário não encontrado.');

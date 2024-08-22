@@ -1,5 +1,6 @@
 const { sql, poolPromise } = require('./db');
 const config = require('config');
+const sequelize = require('./sequelize');
 
 const iniciarBanco = async (gerarDados) => {
   try {
@@ -205,6 +206,17 @@ const iniciarBanco = async (gerarDados) => {
   }
 }
 
+const initDB = async () => {
+    try {
+      await sequelize.sync({ force: false });
+      console.log('Tabelas sincronizadas com sucesso!');
+    } catch (error) {
+      console.error('Erro ao sincronizar as tabelas:', error);
+    }
+  };
+
 deveGerar = config.get('db.gerarDados')
 
 iniciarBanco( deveGerar == Boolean?false:deveGerar)
+
+initDB();
