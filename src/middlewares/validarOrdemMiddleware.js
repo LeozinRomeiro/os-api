@@ -5,7 +5,6 @@ const ValidarOrdem = [
     body('idAtividade').notEmpty().withMessage('Atividade executada é obrigatório'),
     body('idCliente').notEmpty().withMessage('Necessario informar o cliente solicitante'),
     body('idProjeto'),
-    body('idPeriodo').notEmpty().withMessage('Por favor determinar o periodo de execução da atividade'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

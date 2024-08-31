@@ -1,52 +1,57 @@
-const { sql, poolPromise } = require('../config/db');
+const { DataTypes } = require('sequelize')
+const sequelize = require('../config/sequelize')
+const Projeto = require('./projeto')
+const Atividade = require('./atividade')
+const Cliente = require('./cliente')
+const Funcionario = require('./funcionario')
 
-class Ordem {
-  constructor(ordem) {
-    this.idAtividade = ordem.idAtividade;
-    this.idCliente = ordem.idCliente;
-    this.idPeriodo = ordem.idPeriodo;
-    this.idTecnico = ordem.idTecnico;
-    this.idProjeto = ordem.idProjeto;
-    this.dataHora = new Date();
-  }
+const Ordem = sequelize.define('OrdemDeServico', {
+  OrdemID: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  ProjetoID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Projeto,
+      key: 'ProjetoID',
+    },
+  },
+  ClienteID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Cliente,
+      key: 'ClienteID',
+    },
+  },
+  FuncionarioID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Funcionario,
+      key: 'FuncionarioID',
+    },
+  },
+  AtividadeID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Atividade,
+      key: 'AtividadeID',
+    },
+  },
+}, {
+  tableName: 'OrdemDeServico',
+  timestamps: false,
+});
 
-  static async getAll() {
-    try {
-      const pool = await poolPromise;
-      const result = await pool.request().query('SELECT * FROM Orders');
-      return result.recordset;
-    } catch (err) {
-      console.log(err);
-    }
-  }
+Ordem.belongsTo(Projeto, { foreignKey: 'ProjetoID' });
+Ordem.belongsTo(Cliente, { foreignKey: 'ClienteID' });
+Ordem.belongsTo(Funcionario, { foreignKey: 'FuncionarioID' });
+Ordem.belongsTo(Atividade, { foreignKey: 'AtividadeID' });
 
-  static async getById(){
-    try {
-      const pool = await poolPromise;
-      const result = await pool.request().input('idOrdem', sql.VarChar, ordem.idOrdem).query('SELECT * FROM Orders WHERE OrdemID = @idOrdem');
-      return result.recordset;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  static async create(ordem) {
-    try {
-      const pool = await poolPromise;
-      const result = await pool.request()
-        .input('idAtividade', sql.VarChar, ordem.idAtividade)
-        .input('idCliente', sql.VarChar, ordem.idCliente)
-        .input('idPeriodo', sql.VarChar, ordem.idPeriodo)
-        .input('idTecnico', sql.VarChar, ordem.idTecnico)
-        .input('idProjeto', sql.VarChar, ordem.idProjeto)
-        //.input('createdAt', sql.DateTime, new Date())
-        .query('INSERT INTO [OrdemDeServico] (AtividadeID, ClienteID, PeriodoID, FuncionarioID, ProjetoID) OUTPUT INSERTED.* VALUES (@idAtividade, @idCliente, @idPeriodo, @idTecnico, @idProjeto)');
-      return result.recordset;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  
-}
+Cliente.hasMany(Ordem, { foreignKey: 'ClienteID', as: 'Cliente' });
+Funcionario.hasMany(Ordem, { foreignKey: 'FuncionarioID', as: 'Funcionario' });
+Projeto.hasMany(Ordem, { foreignKey: 'ProjetoID', as: 'Projeto' });
+Atividade.hasMany(Ordem, { foreignKey: 'AtividadeID', as: 'Atividade' });
 
 module.exports = Ordem;

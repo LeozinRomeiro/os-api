@@ -16,11 +16,13 @@ const authRoutes = require('./routes/authRoutes');
 const ordemRoutes = require('./routes/ordemRoutes');
 const usuarioRoute = require('./routes/usuarioRoute');
 const atividadeRoutes = require('./routes/atividadeRoutes');
+const periodoRoutes = require('./routes/periodoRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/ordens', ordemRoutes);
 app.use('/api/usuarios', usuarioRoute);
 app.use('/api/atividade', atividadeRoutes);
+app.use('/api/periodos', periodoRoutes);
 
 const port = 3000;
 app.listen(port, () => {

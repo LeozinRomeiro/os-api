@@ -17,14 +17,18 @@ exports.cadastrar = async (req, res) => {
     
 }
 
-// exports.getAllOrders = async (req, res) => {
-//   try {
-//     const ordens = await Ordem.getAll();
-//     res.json(ordens);
-//   } catch (err) {
-//     res.status(500).send('Erro no servidor');
-//   }
-// };
+exports.buscar = async (req, res) => {
+  try {
+      
+      const ordens = await ordemService.buscar()
+
+      res.status(200).send(ordens)
+
+  } catch (error) {
+      res.status(400).send({message: error.message});
+  }
+}
+
 
 // exports.createOrder = async (req, res) => {
 //   try {
