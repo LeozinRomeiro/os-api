@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize')
 const sequelize = require('../config/sequelize')
 const Projeto = require('./projeto')
 const Atividade = require('./atividade')
-const Cliente = require('./cliente')
+const Cliente = require('./clienteSequelize')
 const Funcionario = require('./funcionario')
 
 const Ordem = sequelize.define('OrdemDeServico', {

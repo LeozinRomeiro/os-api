@@ -1,6 +1,6 @@
 const data = require('../models/ordem')
 const Periodo = require('../models/periodo')
-const Cliente = require('../models/cliente')
+const Cliente = require('../models/clienteSequelize')
 const Funcionario = require('../models/funcionario')
 const Projeto = require('../models/projeto')
 const Atividade = require('../models/atividade')
