@@ -1,105 +1,118 @@
-const data = require('../models/atividade')
+const { Atividade, AtividadesSequelize } = require('../models/atividade')
 const { hash } = require('bcryptjs')
 
-class AtividadeService{
+class AtividadeService {
+  async listar() {
+    try {
+      const atividade = await AtividadesSequelize.findAll()
 
-    async listar() {
-        try {
-            const atividade = await data.get();
-            return atividade;
-        } catch (error) {
-            throw new Error('Erro ao listar atividade: ' + error.message);
-        }
+      return this.informacoesUsuario(atividade)
+    } catch (error) {
+      throw new Error('Erro ao listar atividade: ' + error.message)
     }
+  }
 
-    async buscarPorId(id) {
-        try {
-            const atividade = await data.getById(id);
+  async buscarPorId(id) {
+    try {
+      const atividade = await AtividadesSequelize.findByPk(id)
 
-            if (!atividade) {
-                throw new Error('Atividade não encontrado.');
-            }
+      if (!atividade) {
+        throw new Error('Atividade não encontrado.')
+      }
 
-            return atividade;
-        } catch (error) {
-            throw new Error('Erro ao buscar atividade: ' + error.message);
-        }
+      return this.informacoesUsuario(atividade)
+    } catch (error) {
+      throw new Error('Erro ao buscar atividade: ' + error.message)
     }
+  }
 
-    async buscarPorNome(descricao) {
-        try {
-            const atividade = await data.getByName(descricao);
-
-            if (!atividade) {
-                throw new Error('Atividade não encontrado.');
-            }
-
-            return atividade;
-        } catch (error) {
-            throw new Error('Erro ao buscar atividade: ' + error.message);
+  async buscarPorNome(descricao) {
+    try {
+      const atividade = await AtividadesSequelize.findOne({
+        where: {
+          Descricao: descricao
         }
+      })
+
+      if (!atividade) {
+        throw new Error('Atividade não encontrado.')
+      }
+
+      return this.informacoesUsuario(atividade)
+    } catch (error) {
+      throw new Error('Erro ao buscar atividade: ' + error.message)
     }
+  }
 
-    async cadastrar(atv){
+  async cadastrar(atv) {
+    try {
+      const atividade = await AtividadesSequelize.findByPk(atv.id)
 
-        try {
-            const atividade = await data.getById(atv.id)
+      if (atividade) {
+        throw new Error('Atividade já cadastrada')
+      }
 
-            if (atividade) {
-                throw new Error('Atividade já cadastrada')
-            }
-    
-            await data.create({
-                nome: atv.nome,
-                descricao: atv.descricao,
-            })
-            
-            const novaAtividade = await data.getById(atv.id)
+      await AtividadesSequelize.create({
+        nome: atv.nome,
+        descricao: atv.descricao
+      })
 
-            return novaAtividade
+      const novaAtividade = await AtividadesSequelize.findByPk(atv.id)
 
-        } catch (error) {
-            throw Error("Erro ao cadastrar atividade:" + error.message)
+      return this.informacoesUsuario(novaAtividade)
+    } catch (error) {
+      throw Error('Erro ao cadastrar atividade:' + error.message)
+    }
+  }
+
+  async atualizar(id, atv) {
+    try {
+      const atividade = await AtividadesSequelize.findByPk(id)
+
+      if (!atividade) {
+        throw new Error('Atividade não encontrada!')
+      }
+
+      await AtividadesSequelize.update(
+        {
+          nome: atv.nome || atividade.nome,
+          descricao: atv.descricao || atividade.descricao
+        },
+        {
+          where: {
+            AtividadeId: id
+          }
         }
+      )
+
+      const atividadeAtualizada = await AtividadesSequelize.findByPk(id)
+
+      return this.informacoesUsuario(atividadeAtualizada)
+    } catch (error) {
+      throw new Error('Erro ao atualizar atividade! ' + error.message)
     }
+  }
 
-    async atualizar(id, atv) {
-        try {
-            const atividade = await data.getById(id);
+  async deletar(id) {
+    try {
+      const atividade = await AtividadesSequelize.findByPk(id)
 
-            if (!atividade) {
-                throw new Error('Atividade não encontrada!');
-            }
+      if (!atividade) {
+        throw new Error('Atividade não encontrada!')
+      }
 
-            await data.update({
-                id: id,
-                nome: atv.nome || atividade.nome,
-                descricao: atv.descricao || atividade.descricao,
-            });
+      await AtividadesSequelize.destroy({ where: { AtividadeId: id } })
 
-            const atividadeAtualizada = await data.getById(id);
-
-            return atividadeAtualizada;
-        } catch (error) {
-            throw new Error('Erro ao atualizar atividade! ' + error.message);
-        }
+      return { message: 'Atividade deletada com sucesso.' }
+    } catch (error) {
+      throw new Error('Erro ao deletar atividade: ' + error.message)
     }
+  }
 
-    async deletar(id) {
-        try {
-            const atividade = await data.getById(id);
-
-            if (!atividade) {
-                throw new Error('Atividade não encontrada!');
-            }
-
-            await data.delete(id);
-
-            return { message: 'Atividade deletada com sucesso.' };
-        } catch (error) {
-            throw new Error('Erro ao deletar atividade: ' + error.message);
-        }
-    }
+  informacoesUsuario(atividade) {
+    const infoAtividade = new Atividade(atividade)
+    return infoAtividade
+  }
 }
 
 module.exports = AtividadeService

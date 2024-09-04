@@ -1,22 +1,37 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../config/sequelize')
 
-const Atividade = sequelize.define('Atividade', {
-    AtividadeID: {
+class Atividade {
+  constructor(Atividade) {
+    this.nome = Atividade.nome
+    this.descricao = Atividade.descricao
+  }
+}
+
+const AtividadesSequelize = sequelize.define(
+  'Atividades',
+  {
+    AtividadeId: {
       type: DataTypes.INTEGER,
+      unique: true,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     Nome: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: false
     },
     Descricao: {
       type: DataTypes.TEXT,
-    },
-  }, {
-    tableName: 'Atividade',
-    timestamps: false,
-  });
+      allowNull: true
+    }
+  },
+  {
+    // Com a utilização de sequelize, o nome da tabela é automaticamente definido como Clientes
+    // Desabilita a criação automática de createdAt e updatedAt
+    tableName: 'Atividades',
+    timestamps: false
+  }
+)
 
-  module.exports = Atividade;
+module.exports = { Atividade, AtividadesSequelize }

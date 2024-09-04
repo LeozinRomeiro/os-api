@@ -32,6 +32,10 @@ exports.buscarPorId = async (req, res) => {
     const { id } = req.params
     const cliente = await clienteService.buscarPorId(id)
 
+    if (!cliente) {
+      return res.send({ message: 'Cliente não encontrado com este Id' })
+    }
+
     res.status(200).send(clienteService.informacoesCliente(cliente))
   } catch (error) {
     res.status(200).send({ message: error.message })
@@ -43,7 +47,7 @@ exports.buscarPorCnpj = async (req, res) => {
     const { cnpj } = req.params
     const cliente = await clienteService.buscarPorCNPJ(cnpj)
 
-    if (cliente === null) {
+    if (!cliente) {
       return res.send({ message: 'Cliente não encontrado com este CNPJ' })
     }
 

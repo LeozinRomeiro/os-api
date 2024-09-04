@@ -1,11 +1,12 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../config/sequelize')
 
-const ClienteSequelize = sequelize.define(
-  'Clientes',
+const FuncionariosSequelize = sequelize.define(
+  'Funcionarios',
   {
-    ClienteId: {
+    FuncionarioID: {
       type: DataTypes.INTEGER,
+      unique: true,
       primaryKey: true,
       autoIncrement: true
     },
@@ -13,8 +14,8 @@ const ClienteSequelize = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    CNPJ: {
-      type: DataTypes.STRING(14),
+    CPF: {
+      type: DataTypes.STRING(11),
       allowNull: false,
       unique: true
     }
@@ -22,8 +23,9 @@ const ClienteSequelize = sequelize.define(
   {
     // Com a utilização de sequelize, o nome da tabela é automaticamente definido como Clientes
     // Desabilita a criação automática de createdAt e updatedAt
+    tableName: 'Funcionarios',
     timestamps: false
   }
 )
 
-module.exports = ClienteSequelize
+module.exports = { FuncionariosSequelize }

@@ -1,10 +1,10 @@
-const { sql, poolPromise } = require('./db');
-const config = require('config');
-const sequelize = require('./sequelize');
+const { sql, poolPromise } = require('./db')
+const config = require('config')
+const sequelize = require('./sequelize')
 
-const iniciarBanco = async (gerarDados) => {
+const iniciarBanco = async gerarDados => {
   try {
-    const pool = await poolPromise;
+    const pool = await poolPromise
 
     const criarTabelas = `
     -- Verifica se as tabelas não existe e cria as mesmas
@@ -36,9 +36,9 @@ const iniciarBanco = async (gerarDados) => {
         );
     END
 
-    IF OBJECT_ID('Atividade', 'U') IS NULL
+    IF OBJECT_ID('Atividades', 'U') IS NULL
     BEGIN
-        CREATE TABLE Atividade (
+        CREATE TABLE Atividades (
             AtividadeID INT PRIMARY KEY IDENTITY(1,1),
             Nome VARCHAR(255) NOT NULL,
             Descricao TEXT
@@ -55,9 +55,9 @@ const iniciarBanco = async (gerarDados) => {
         );
     END
 
-    IF OBJECT_ID('OrdemDeServico', 'U') IS NULL
+    IF OBJECT_ID('OrdemDeServicos', 'U') IS NULL
     BEGIN
-        CREATE TABLE OrdemDeServico (
+        CREATE TABLE OrdemDeServicos (
             OrdemID INT PRIMARY KEY IDENTITY(1,1),
             ProjetoID INT,
             ClienteID INT,
@@ -68,20 +68,20 @@ const iniciarBanco = async (gerarDados) => {
             FOREIGN KEY (ProjetoID) REFERENCES Projetos(ProjetoID),
             FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
             FOREIGN KEY (FuncionarioID) REFERENCES Funcionarios(FuncionarioID),
-            FOREIGN KEY (AtividadeID) REFERENCES Atividade(AtividadeID)
+            FOREIGN KEY (AtividadeID) REFERENCES Atividades(AtividadeID)
         );
     END
 
-    IF OBJECT_ID('Usuario', 'U') IS NULL
+    IF OBJECT_ID('Usuarios', 'U') IS NULL
     BEGIN
-        CREATE TABLE Usuario (
+        CREATE TABLE Usuarios (
             UsuarioID INT PRIMARY KEY IDENTITY(1,1),
             Nome VARCHAR(50),
             Senha VARCHAR(100),
             Email VARCHAR(50),
         );
     END
-    `;
+    `
 
     const inserirDados = `
     -- Verificar e inserir dados na tabela Clientes
@@ -130,18 +130,18 @@ const iniciarBanco = async (gerarDados) => {
     END
 
     -- Verificar e inserir dados na tabela Atividade
-    IF NOT EXISTS (SELECT * FROM Atividade)
+    IF NOT EXISTS (SELECT * FROM Atividades)
     BEGIN
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Desenvolvimento de Front-end', 'Criação da interface visual do projeto');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Desenvolvimento de Back-end', 'Implementação da lógica e regras de negócio');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Design Gráfico', 'Criação de artes e layouts');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Análise de Requisitos', 'Levantamento e análise de necessidades do cliente');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Teste de Software', 'Testes para garantir a qualidade do sistema');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Desenvolvimento de Front-end', 'Criação da interface visual do projeto');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Desenvolvimento de Back-end', 'Implementação da lógica e regras de negócio');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Design Gráfico', 'Criação de artes e layouts');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Análise de Requisitos', 'Levantamento e análise de necessidades do cliente');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Teste de Software', 'Testes para garantir a qualidade do sistema');
         INSERT INTO Atividade (Nome, Descricao) VALUES ('Documentação', 'Escrita de documentos técnicos e manuais');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Manutenção', 'Correção de bugs e melhorias');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Suporte Técnico', 'Atendimento e resolução de problemas');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Gestão de Projetos', 'Coordenação e acompanhamento do projeto');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Treinamento', 'Capacitação dos usuários no uso do sistema');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Manutenção', 'Correção de bugs e melhorias');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Suporte Técnico', 'Atendimento e resolução de problemas');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Gestão de Projetos', 'Coordenação e acompanhamento do projeto');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Treinamento', 'Capacitação dos usuários no uso do sistema');
     END
 
     -- Verificar e inserir dados na tabela Periodo
@@ -159,8 +159,8 @@ const iniciarBanco = async (gerarDados) => {
         INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-10-01', '2024-10-31', '160 horas');
     END
 
-    -- Verificar e inserir dados na tabela OrdemDeServico
-    IF NOT EXISTS (SELECT * FROM OrdemDeServico)
+    -- Verificar e inserir dados na tabela OrdemDeServicos
+    IF NOT EXISTS (SELECT * FROM OrdemDeServicos)
     BEGIN
         INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (1, 1, 1, 1, 1);
         INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (2, 2, 2, 2, 2);
@@ -175,48 +175,47 @@ const iniciarBanco = async (gerarDados) => {
     END
 
     -- Verificar e inserir dados na tabela Usuario
-    IF NOT EXISTS (SELECT * FROM Usuario)
+    IF NOT EXISTS (SELECT * FROM Usuarios)
     BEGIN
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('admin', '123456', 'admin@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('maria', 'senha123', 'maria@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('joao', 'senha123', 'joao@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('ana', 'senha123', 'ana@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('pedro', 'senha123', 'pedro@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('carla', 'senha123', 'carla@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('lucas', 'senha123', 'lucas@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('fernando', 'senha123', 'fernando@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('julia', 'senha123', 'julia@osapi.com');
-        INSERT INTO Usuario (Nome, Senha, Email) VALUES ('marcos', 'senha123', 'marcos@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('admin', '123456', 'admin@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('maria', 'senha123', 'maria@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('joao', 'senha123', 'joao@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('ana', 'senha123', 'ana@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('pedro', 'senha123', 'pedro@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('carla', 'senha123', 'carla@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('lucas', 'senha123', 'lucas@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('fernando', 'senha123', 'fernando@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('julia', 'senha123', 'julia@osapi.com');
+        INSERT INTO Usuarios (Nome, Senha, Email) VALUES ('marcos', 'senha123', 'marcos@osapi.com');
     END
-    `;
+    `
 
     let message = 'Tabelas criadas com sucesso!'
 
     await pool.request().query(criarTabelas)
 
-    if(gerarDados == true){
-        await pool.request().query(inserirDados)
-        message += ' Tabelas populadas com sucesso!'
+    if (gerarDados == true) {
+      await pool.request().query(inserirDados)
+      message += ' Tabelas populadas com sucesso!'
     }
 
-    console.log(message);
-    
+    console.log(message)
   } catch (err) {
-    console.error('Erro ao criar tabelas:', err);
+    console.error('Erro ao criar tabelas:', err)
   }
 }
 
 const initDB = async () => {
-    try {
-      await sequelize.sync({ force: false });
-      console.log('Tabelas sincronizadas com sucesso!');
-    } catch (error) {
-      console.error('Erro ao sincronizar as tabelas:', error);
-    }
-  };
+  try {
+    await sequelize.sync({ force: false })
+    console.log('Tabelas sincronizadas com sucesso!')
+  } catch (error) {
+    console.error('Erro ao sincronizar as tabelas:', error)
+  }
+}
 
 deveGerar = config.get('db.gerarDados')
 
-iniciarBanco( deveGerar == Boolean?false:deveGerar)
+iniciarBanco(deveGerar == Boolean ? false : deveGerar)
 
-initDB();
+initDB()
