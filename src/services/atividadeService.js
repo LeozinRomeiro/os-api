@@ -40,28 +40,31 @@ class AtividadeService{
         }
     }
 
-    async cadastrar(atv){
-
+    async cadastrar(atv) {
         try {
-            const atividade = await data.getById(atv.id)
-
-            if (atividade) {
-                throw new Error('Atividade já cadastrada')
-            }
-    
-            await data.create({
+            // Cria a nova atividade e recebe o ID dela
+            const novaAtividadeId = await data.create({
                 nome: atv.nome,
                 descricao: atv.descricao,
-            })
-            
-            const novaAtividade = await data.getById(atv.id)
-
-            return novaAtividade
-
+            });
+    
+            // Agora busque a atividade completa usando o ID
+            const novaAtividade = await data.getById(novaAtividadeId);
+    
+            if (!novaAtividade) {
+                throw new Error("Atividade não encontrada após criação.");
+            }
+    
+            return novaAtividade;
+    
         } catch (error) {
-            throw Error("Erro ao cadastrar atividade:" + error.message)
+            throw new Error("Erro ao cadastrar atividade: " + error.message);
         }
     }
+    
+    
+    
+    
 
     async atualizar(id, atv) {
         try {

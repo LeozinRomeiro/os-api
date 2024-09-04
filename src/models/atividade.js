@@ -48,12 +48,15 @@ class Atividade {
             const result = await pool.request()
                 .input('nome', sql.NVarChar, Atividade.nome)
                 .input('descricao', sql.NVarChar, Atividade.descricao)
-                .query('insert into [Atividade] (nome, descricao) values (@nome, @descricao)');
-            return result.rowsAffected;
+                .query('INSERT INTO [Atividade] (nome, descricao) OUTPUT INSERTED.AtividadeID VALUES (@nome, @descricao)');
+            
+            // Retorna o ID da nova atividade
+            return result.recordset[0].AtividadeID;
         } catch (error) {
             console.error('SQL error:', error);
         }
     }
+    
 
     static async update(Atividade) {
         try {

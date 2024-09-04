@@ -12,7 +12,8 @@ class AuthService{
         }
 
         const authenticated = await compare(dto.senha, usuario.Senha);
-
+        console.log(authenticated);
+        
         if (!authenticated) {
             throw new Error('Usuario ou senha incorreto');
         }

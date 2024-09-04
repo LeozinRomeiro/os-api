@@ -37,6 +37,7 @@ class Usuario {
             const result = await pool.request()
                 .input('email', sql.NVarChar, email)
                 .query('SELECT * FROM [Usuario] WHERE Email = @email');
+                console.log(result);
             return result.recordset[0];
         } catch (error) {
             console.error('SQL error:', error);
