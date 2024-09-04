@@ -42,13 +42,11 @@ class AtividadeService{
 
     async cadastrar(atv) {
         try {
-            // Cria a nova atividade e recebe o ID dela
             const novaAtividadeId = await data.create({
                 nome: atv.nome,
                 descricao: atv.descricao,
             });
     
-            // Agora busque a atividade completa usando o ID
             const novaAtividade = await data.getById(novaAtividadeId);
     
             if (!novaAtividade) {

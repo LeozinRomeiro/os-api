@@ -50,7 +50,6 @@ class Atividade {
                 .input('descricao', sql.NVarChar, Atividade.descricao)
                 .query('INSERT INTO [Atividade] (nome, descricao) OUTPUT INSERTED.AtividadeID VALUES (@nome, @descricao)');
             
-            // Retorna o ID da nova atividade
             return result.recordset[0].AtividadeID;
         } catch (error) {
             console.error('SQL error:', error);
