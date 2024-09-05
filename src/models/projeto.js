@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/sequelize');
-const Cliente = require('./cliente');
+const {Cliente,ClienteSequelize} = require('./cliente');
 
 const Projeto = sequelize.define('Projeto', {
   ProjetoID: {
@@ -15,7 +15,7 @@ const Projeto = sequelize.define('Projeto', {
   ClienteID: {
     type: DataTypes.INTEGER,
     references: {
-      model: Cliente,
+      model: ClienteSequelize,
       key: 'ClienteID',
     },
   },
@@ -24,6 +24,6 @@ const Projeto = sequelize.define('Projeto', {
   timestamps: false,
 });
 
-Projeto.belongsTo(Cliente, { foreignKey: 'ClienteID' });
+Projeto.belongsTo(ClienteSequelize, { foreignKey: 'ClienteID' });
 
 module.exports = Projeto;
