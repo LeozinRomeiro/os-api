@@ -1,10 +1,9 @@
-const dataSequelize = require('../models/clienteSequelize')
-const Cliente = require('../models/cliente')
+const { Cliente, ClienteSequelize } = require('../models/cliente')
 
 class ClienteService {
   async cadastrar(dto) {
     try {
-      const cliente = await dataSequelize.create({
+      const cliente = await ClienteSequelize.create({
         Nome: dto.nome,
         CNPJ: dto.cnpj
       })
@@ -15,7 +14,7 @@ class ClienteService {
   }
 
   async buscarPorCNPJ(cnpj) {
-    const cliente = await dataSequelize.findOne({
+    const cliente = await ClienteSequelize.findOne({
       where: {
         CNPJ: cnpj
       }
@@ -24,17 +23,14 @@ class ClienteService {
   }
 
   async buscarPorId(id) {
-    const cliente = await dataSequelize.findByPk(id)
-    if (cliente === null) {
-      throw new Error('Cliente não encontrado com este Id')
-    } else {
-      return cliente
-    }
+    const cliente = await ClienteSequelize.findByPk(id)
+
+    return cliente
   }
 
   async buscarPorNome(nome) {
     try {
-      const cliente = await dataSequelize.findOne({
+      const cliente = await ClienteSequelize.findOne({
         where: {
           Nome: nome
         }
@@ -51,16 +47,16 @@ class ClienteService {
 
     console.log(clienteCNPJ, clienteNome)
 
-    if (clienteCNPJ !== null) {
+    if (clienteCNPJ) {
       throw new Error('Já existe um cliente com este CNPJ')
     }
-    if (clienteNome !== null) {
+    if (clienteNome) {
       throw new Error('Já existe um cliente com este Nome')
     }
   }
 
   async findAllClientes() {
-    const clientes = await dataSequelize.findAll()
+    const clientes = await ClienteSequelize.findAll()
     return clientes
   }
 

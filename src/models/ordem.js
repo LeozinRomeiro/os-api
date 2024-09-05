@@ -54,4 +54,4 @@ Funcionario.hasMany(Ordem, { foreignKey: 'FuncionarioID', as: 'Funcionario' });
 Projeto.hasMany(Ordem, { foreignKey: 'ProjetoID', as: 'Projeto' });
 Atividade.hasMany(Ordem, { foreignKey: 'AtividadeID', as: 'Atividade' });
 
-module.exports = Ordem;
+module.exports = Ordem
