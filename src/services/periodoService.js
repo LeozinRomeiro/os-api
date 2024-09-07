@@ -6,7 +6,7 @@ class PeridoService {
     async criar(dto){
         try{
 
-            return await data.create({DataInicio: dto.dataInicio, DataFim: dto.dataFim, OrdemID: dto.ordemID, TempoTotal: this.calcularTotal(dto).toString()})
+            return await data.create({DataInicio: dto.dataInicio, DataFim: dto.dataFim, OrdemID: dto.ordemID, TempoTotal: this.calcularTotal(dto)})
 
         } catch (error) {
             throw new Error('Erro ao criar período: ' + error.message);
@@ -34,6 +34,7 @@ class PeridoService {
             await this.buscarPorId(id)
 
             await data.destroy({where:{PeriodoId: id}})
+            cache.del(`periodo_${id}`);
             cache.del(`todosPeriodos`);
 
             return { message: 'Usuário deletado com sucesso.' }
@@ -80,7 +81,8 @@ class PeridoService {
 
     calcularTotal(dto) {
         const diff = new Date(dto.dataFim) - new Date(dto.dataInicio);
-        return diff / (1000 * 60 * 60);
+        const totalHoras = diff / (1000 * 60 * 60);
+        return parseFloat(totalHoras.toFixed(2));
     }
 
 }
