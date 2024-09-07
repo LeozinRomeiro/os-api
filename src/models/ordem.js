@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../config/sequelize')
 const Projeto = require('./projeto')
-const Atividade = require('./atividade')
-const Cliente = require('./clienteSequelize')
+const {Atividade, AtividadesSequelize} = require('./atividade')
+const {Cliente, ClienteSequelize} = require('./cliente')
 const Funcionario = require('./funcionario')
 
 const Ordem = sequelize.define('OrdemDeServico', {
@@ -21,7 +21,7 @@ const Ordem = sequelize.define('OrdemDeServico', {
   ClienteID: {
     type: DataTypes.INTEGER,
     references: {
-      model: Cliente,
+      model: ClienteSequelize,
       key: 'ClienteID',
     },
   },
@@ -35,7 +35,7 @@ const Ordem = sequelize.define('OrdemDeServico', {
   AtividadeID: {
     type: DataTypes.INTEGER,
     references: {
-      model: Atividade,
+      model: AtividadesSequelize,
       key: 'AtividadeID',
     },
   },
@@ -45,13 +45,13 @@ const Ordem = sequelize.define('OrdemDeServico', {
 });
 
 Ordem.belongsTo(Projeto, { foreignKey: 'ProjetoID' });
-Ordem.belongsTo(Cliente, { foreignKey: 'ClienteID' });
+Ordem.belongsTo(ClienteSequelize, { foreignKey: 'ClienteID' });
 Ordem.belongsTo(Funcionario, { foreignKey: 'FuncionarioID' });
-Ordem.belongsTo(Atividade, { foreignKey: 'AtividadeID' });
+Ordem.belongsTo(AtividadesSequelize, { foreignKey: 'AtividadeID' });
 
-Cliente.hasMany(Ordem, { foreignKey: 'ClienteID', as: 'Cliente' });
+ClienteSequelize.hasMany(Ordem, { foreignKey: 'ClienteID', as: 'Cliente' });
 Funcionario.hasMany(Ordem, { foreignKey: 'FuncionarioID', as: 'Funcionario' });
 Projeto.hasMany(Ordem, { foreignKey: 'ProjetoID', as: 'Projeto' });
-Atividade.hasMany(Ordem, { foreignKey: 'AtividadeID', as: 'Atividade' });
+AtividadesSequelize.hasMany(Ordem, { foreignKey: 'AtividadeID', as: 'Atividade' });
 
-module.exports = Ordem;
+module.exports = Ordem
