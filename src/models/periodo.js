@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/sequelize');
 const OrdemDeServico = require('./ordem')
 
-const Periodo = sequelize.define('Periodo', {
+const Periodo = sequelize.define('Periodos', {
     PeriodoID: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -17,7 +17,7 @@ const Periodo = sequelize.define('Periodo', {
         allowNull: false,
     },
     TempoTotal: {
-        type: DataTypes.STRING,
+        type: DataTypes.DECIMAL(5, 2),
         allowNull: false
     },
     OrdemID: {
@@ -28,11 +28,11 @@ const Periodo = sequelize.define('Periodo', {
         },
     }
     }, {
-    tableName: 'Periodo',
+    tableName: 'Periodos',
     timestamps: false
 });
 
 OrdemDeServico.hasMany(Periodo, { foreignKey: 'OrdemID', as: 'Periodos' });
-Periodo.belongsTo(OrdemDeServico, { foreignKey: 'OrdemID', as: 'OrdemDeServico' });
+Periodo.belongsTo(OrdemDeServico, { foreignKey: 'OrdemID', as: 'OrdemDeServicos' });
 
 module.exports = Periodo;

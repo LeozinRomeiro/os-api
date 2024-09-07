@@ -53,7 +53,6 @@ const iniciarBanco = async gerarDados => {
             ClienteID INT,
             FuncionarioID INT,
             AtividadeID INT,
-            PeriodoID INT,
             FOREIGN KEY (ProjetoID) REFERENCES Projetos(ProjetoID),
             FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
             FOREIGN KEY (FuncionarioID) REFERENCES Funcionarios(FuncionarioID),
@@ -61,16 +60,28 @@ const iniciarBanco = async gerarDados => {
         );
     END
 
-    IF OBJECT_ID('Usuarios', 'U') IS NULL
-    BEGIN
-        CREATE TABLE Usuarios (
-            UsuarioID INT PRIMARY KEY IDENTITY(1,1),
-            Nome VARCHAR(50),
-            Senha VARCHAR(100),
-            Email VARCHAR(50),
-        );
-    END
-    `
+        IF OBJECT_ID('Periodos', 'U') IS NULL
+        BEGIN
+            CREATE TABLE Periodos (
+                PeriodoID INT PRIMARY KEY IDENTITY(1,1),
+                DataInicio DATE NOT NULL,
+                DataFim DATE NOT NULL,
+                TempoTotal DECIMAL NOT NULL,
+                OrdemID INT,
+                FOREIGN KEY (OrdemID) REFERENCES OrdemDeServico(OrdemID),
+            );
+        END
+
+        IF OBJECT_ID('Usuarios', 'U') IS NULL
+        BEGIN
+            CREATE TABLE Usuarios (
+                UsuarioID INT PRIMARY KEY IDENTITY(1,1),
+                Nome VARCHAR(50),
+                Senha VARCHAR(100),
+                Email VARCHAR(50),
+            );
+        END
+    `;
 
     const inserirDados = `
     -- Verificar e inserir dados na tabela Clientes
@@ -134,33 +145,33 @@ const iniciarBanco = async gerarDados => {
     END
 
     -- Verificar e inserir dados na tabela Periodo
-    IF NOT EXISTS (SELECT * FROM Periodo)
+    IF NOT EXISTS (SELECT * FROM Periodos)
     BEGIN
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-01-01', '2024-01-31', '160 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-02-01', '2024-02-28', '140 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-03-01', '2024-03-31', '150 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-04-01', '2024-04-30', '160 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-05-01', '2024-05-31', '170 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-06-01', '2024-06-30', '160 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-07-01', '2024-07-31', '180 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-08-01', '2024-08-31', '160 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-09-01', '2024-09-30', '150 horas');
-        INSERT INTO Periodo (DataInicio, DataFim, TempoTotal) VALUES ('2024-10-01', '2024-10-31', '160 horas');
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-01-01', '2024-01-31', 160 , 1);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-02-01', '2024-02-28', 140 , 2);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-03-01', '2024-03-31', 150 , 3);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-04-01', '2024-04-30', 160 , 4);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-05-01', '2024-05-31', 170 , 5);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-06-01', '2024-06-30', 160 , 6);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-07-01', '2024-07-31', 180 , 7);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-08-01', '2024-08-31', 160 , 8);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-09-01', '2024-09-30', 150 , 9);
+        INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-10-01', '2024-10-31', 160 , 10);
     END
 
     -- Verificar e inserir dados na tabela OrdemDeServicos
     IF NOT EXISTS (SELECT * FROM OrdemDeServicos)
     BEGIN
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (1, 1, 1, 1, 1);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (2, 2, 2, 2, 2);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (3, 3, 3, 3, 3);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (4, 4, 4, 4, 4);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (5, 5, 5, 5, 5);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (6, 6, 6, 6, 6);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (7, 7, 7, 7, 7);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (8, 8, 8, 8, 8);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (9, 9, 9, 9, 9);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID, PeriodoID) VALUES (10, 10, 10, 10, 10);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (1, 1, 1, 1);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (2, 2, 2, 2);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (3, 3, 3, 3);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (4, 4, 4, 4);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (5, 5, 5, 5);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (6, 6, 6, 6);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (7, 7, 7, 7);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (8, 8, 8, 8);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (9, 9, 9, 9);
+        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (10, 10, 10, 10);
     END
 
     -- Verificar e inserir dados na tabela Usuario

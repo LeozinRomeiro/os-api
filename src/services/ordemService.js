@@ -1,9 +1,9 @@
 const data = require('../models/ordem')
 const Periodo = require('../models/periodo')
-const Cliente = require('../models/clienteSequelize')
-const Funcionario = require('../models/funcionario')
+const { Cliente, ClienteSequelize } = require('../models/cliente')
+const { Funcionario, FuncionariosSequelize } = require('../models/funcionario')
 const Projeto = require('../models/projeto')
-const Atividade = require('../models/atividade')
+const { Atividade } = require('../models/atividade')
 
 class OrdemService{
 
@@ -11,11 +11,10 @@ class OrdemService{
 
         try {
             const Ordem = data.create({
-                idTecnico: dto.idTecnico,
-                idPeriodo:  dto.idPeriodo,
-                idCliente: dto.idCliente,
-                idAtividade: dto.idAtividade,
-                idProjeto: dto.idProjeto
+                FuncionarioID: dto.idTecnico,
+                ClienteID: dto.idCliente,
+                AtividadeID: dto.idAtividade,
+                ProjetoID: dto.idProjeto
             })
 
             return Ordem
@@ -51,6 +50,37 @@ class OrdemService{
                     }]});
 
             return ordens;
+        } catch (error) {
+            throw new Error('Erro ao buscar ordens: ' + error.message);
+        }
+    }
+
+    async buscarPorId(id){
+        try {
+            const ordem = await data.findByPk(id,{                
+                include: [
+                    {
+                        model: Periodo,
+                        as: 'Periodos' 
+                    },
+                    {
+                        model: Cliente,
+                        as: 'Cliente' 
+                    },
+                    {
+                        model: Funcionario,
+                        as: 'Funcionario' 
+                    },
+                    {
+                        model: Projeto,
+                        as: 'Projeto' 
+                    },
+                    {
+                        model: Atividade,
+                        as: 'Atividade' 
+                    }]});
+
+            return ordem;
         } catch (error) {
             throw new Error('Erro ao buscar ordens: ' + error.message);
         }
