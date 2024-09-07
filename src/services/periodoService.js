@@ -1,11 +1,10 @@
+const cache = require('../config/cache')
 const data = require('../models/periodo')
 
 class PeridoService {
 
     async criar(dto){
         try{
-
-            
 
             return await data.create({DataInicio: dto.dataInicio, DataFim: dto.dataFim, OrdemID: dto.ordemID, TempoTotal: this.calcularTotal(dto).toString()})
 
@@ -19,6 +18,9 @@ class PeridoService {
 
             await data.update({DataInicio: dto.dataInicio, DataFim: dto.dataFim, OrdemID: dto.ordemID,TempoTotal: this.calcularTotal(dto).toString()},{where: {PeriodoId: id},},)
             
+            cache.del(`periodo_${id}`);
+            cache.del(`todosPeriodos`);
+
             return this.buscarPorId(id)
 
         } catch (error) {
@@ -32,6 +34,7 @@ class PeridoService {
             await this.buscarPorId(id)
 
             await data.destroy({where:{PeriodoId: id}})
+            cache.del(`todosPeriodos`);
 
             return { message: 'Usuário deletado com sucesso.' }
 
@@ -42,12 +45,17 @@ class PeridoService {
 
     async buscarPorId(id){
         try {
-            const periodo = await data.findByPk(id);
+            const cacheKey = `periodo_${id}`;
+            let periodo = cache.get(cacheKey);
 
             if (!periodo) {
-                throw new Error('Perido não encontrado');
+                periodo = await data.findByPk(id);
+                if (!periodo) {
+                    throw new Error('Perido não encontrado');
+                }
+                cache.set(cacheKey, periodo);
             }
-    
+
             return periodo;
         } catch (error) {
             throw new Error('Erro ao buscar período: ' + error.message);
@@ -56,8 +64,15 @@ class PeridoService {
 
     async buscar(){
         try {
-            const periodo = await data.findAll();
-            return periodo;
+            const cacheKey = `todosPeriodos`;
+            let periodos = cache.get(cacheKey);
+
+            if (!periodos) {
+                periodos = await data.findAll()
+                cache.set(cacheKey, periodos)
+            }
+
+            return periodos;
         } catch (error) {
             throw new Error('Erro ao buscar período: ' + error.message);
         }
