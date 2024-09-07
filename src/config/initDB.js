@@ -3,10 +3,10 @@ const config = require('config')
 const sequelize = require('./sequelize')
 
 const iniciarBanco = async gerarDados => {
-  try {
-    const pool = await poolPromise
-
-    const criarTabelas = `
+    try {
+      const pool = await poolPromise
+  
+      const criarTabelas = `
     -- Verifica se as tabelas não existe e cria as mesmas
     IF OBJECT_ID('Clientes', 'U') IS NULL
     BEGIN
@@ -17,43 +17,33 @@ const iniciarBanco = async gerarDados => {
         );
     END
 
-    IF OBJECT_ID('Funcionarios', 'U') IS NULL
-    BEGIN
-        CREATE TABLE Funcionarios (
-            FuncionarioID INT PRIMARY KEY IDENTITY(1,1),
-            Nome VARCHAR(255) NOT NULL,
-            CPF CHAR(11) NOT NULL UNIQUE
-        );
-    END
+        IF OBJECT_ID('Funcionarios', 'U') IS NULL
+        BEGIN
+            CREATE TABLE Funcionarios (
+                FuncionarioID INT PRIMARY KEY IDENTITY(1,1),
+                Nome VARCHAR(255) NOT NULL,
+                CPF CHAR(11) NOT NULL UNIQUE
+            );
+        END
 
-    IF OBJECT_ID('Projetos', 'U') IS NULL
-    BEGIN
-        CREATE TABLE Projetos (
-            ProjetoID INT PRIMARY KEY IDENTITY(1,1),
-            Nome VARCHAR(255) NOT NULL,
-            ClienteID INT,
-            FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
-        );
-    END
+        IF OBJECT_ID('Projetos', 'U') IS NULL
+        BEGIN
+            CREATE TABLE Projetos (
+                ProjetoID INT PRIMARY KEY IDENTITY(1,1),
+                Nome VARCHAR(255) NOT NULL,
+                ClienteID INT,
+                FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+            );
+        END
 
-    IF OBJECT_ID('Atividades', 'U') IS NULL
-    BEGIN
-        CREATE TABLE Atividades (
-            AtividadeID INT PRIMARY KEY IDENTITY(1,1),
-            Nome VARCHAR(255) NOT NULL,
-            Descricao TEXT
-        );
-    END
-
-    IF OBJECT_ID('Periodo', 'U') IS NULL
-    BEGIN
-        CREATE TABLE Periodo (
-            PeriodoID INT PRIMARY KEY IDENTITY(1,1),
-            DataInicio DATE NOT NULL,
-            DataFim DATE NOT NULL,
-            TempoTotal TEXT NOT NULL
-        );
-    END
+        IF OBJECT_ID('Atividades', 'U') IS NULL
+        BEGIN
+            CREATE TABLE Atividades (
+                AtividadeID INT PRIMARY KEY IDENTITY(1,1),
+                Nome VARCHAR(255) NOT NULL,
+                Descricao TEXT
+            );
+        END
 
     IF OBJECT_ID('OrdemDeServicos', 'U') IS NULL
     BEGIN
@@ -64,7 +54,6 @@ const iniciarBanco = async gerarDados => {
             FuncionarioID INT,
             AtividadeID INT,
             PeriodoID INT,
-            FOREIGN KEY (PeriodoID) REFERENCES Periodo(PeriodoID),
             FOREIGN KEY (ProjetoID) REFERENCES Projetos(ProjetoID),
             FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
             FOREIGN KEY (FuncionarioID) REFERENCES Funcionarios(FuncionarioID),

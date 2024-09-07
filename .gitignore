@@ -28,4 +28,4 @@ Thumbs.db
 
 # Dependências locais
 local/
-config/default.json
+config/

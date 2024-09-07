@@ -1,24 +1,29 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../config/sequelize')
-const { Cliente, ClienteSequelize } = require('./cliente')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/sequelize');
+const {Cliente,ClienteSequelize} = require('./cliente');
 
-const Projetos = sequelize.define(
-  'Projeto',
-  {
-    ProjetoID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    Nome: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    }
+const Projeto = sequelize.define('Projeto', {
+  ProjetoID: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  {
-    tableName: 'Projetos',
-    timestamps: false // Se não houver createdAt e updatedAt
-  }
-)
+  Nome: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  ClienteID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: ClienteSequelize,
+      key: 'ClienteID',
+    },
+  },
+}, {
+  tableName: 'Projetos',
+  timestamps: false,
+});
 
-module.exports = Projetos
+Projeto.belongsTo(ClienteSequelize, { foreignKey: 'ClienteID' });
+
+module.exports = Projeto;
