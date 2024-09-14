@@ -6,6 +6,6 @@ router.post('/', validarOrdem, ordemController.cadastrar)
         .get('/', ordemController.buscar)
         .get('/id/:id', ordemController.buscarPorId)
         .get('/pdf/:id', ordemController.gerarPdf)
-        .get('/previa', ordemController.gerarPrevia);
+        .post('/previa', ordemController.gerarPrevia);
 
 module.exports = router;

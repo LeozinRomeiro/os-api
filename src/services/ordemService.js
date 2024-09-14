@@ -3,7 +3,7 @@ const Periodo = require('../models/periodo')
 const { Cliente, ClienteSequelize } = require('../models/cliente')
 const { Funcionario, FuncionariosSequelize } = require('../models/funcionario')
 const Projeto = require('../models/projeto')
-const { Atividade } = require('../models/atividade')
+const { Atividade, AtividadesSequelize } = require('../models/atividade')
 
 class OrdemService{
 
@@ -33,11 +33,11 @@ class OrdemService{
                         as: 'Periodos' 
                     },
                     {
-                        model: Cliente,
+                        model: ClienteSequelize,
                         as: 'Cliente' 
                     },
                     {
-                        model: Funcionario,
+                        model: FuncionariosSequelize,
                         as: 'Funcionario' 
                     },
                     {
@@ -45,7 +45,7 @@ class OrdemService{
                         as: 'Projeto' 
                     },
                     {
-                        model: Atividade,
+                        model: AtividadesSequelize,
                         as: 'Atividade' 
                     }]});
 
@@ -64,11 +64,11 @@ class OrdemService{
                         as: 'Periodos' 
                     },
                     {
-                        model: Cliente,
+                        model: ClienteSequelize,
                         as: 'Cliente' 
                     },
                     {
-                        model: Funcionario,
+                        model: FuncionariosSequelize,
                         as: 'Funcionario' 
                     },
                     {
@@ -76,7 +76,7 @@ class OrdemService{
                         as: 'Projeto' 
                     },
                     {
-                        model: Atividade,
+                        model: AtividadesSequelize,
                         as: 'Atividade' 
                     }]});
 

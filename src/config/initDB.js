@@ -68,7 +68,7 @@ const iniciarBanco = async gerarDados => {
                 DataFim DATE NOT NULL,
                 TempoTotal DECIMAL NOT NULL,
                 OrdemID INT,
-                FOREIGN KEY (OrdemID) REFERENCES OrdemDeServico(OrdemID),
+                FOREIGN KEY (OrdemID) REFERENCES OrdemDeServicos(OrdemID),
             );
         END
 
@@ -137,11 +137,26 @@ const iniciarBanco = async gerarDados => {
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Design Gráfico', 'Criação de artes e layouts');
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Análise de Requisitos', 'Levantamento e análise de necessidades do cliente');
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Teste de Software', 'Testes para garantir a qualidade do sistema');
-        INSERT INTO Atividade (Nome, Descricao) VALUES ('Documentação', 'Escrita de documentos técnicos e manuais');
+        INSERT INTO Atividades (Nome, Descricao) VALUES ('Documentação', 'Escrita de documentos técnicos e manuais');
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Manutenção', 'Correção de bugs e melhorias');
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Suporte Técnico', 'Atendimento e resolução de problemas');
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Gestão de Projetos', 'Coordenação e acompanhamento do projeto');
         INSERT INTO Atividades (Nome, Descricao) VALUES ('Treinamento', 'Capacitação dos usuários no uso do sistema');
+    END
+
+    -- Verificar e inserir dados na tabela OrdemDeServicos
+    IF NOT EXISTS (SELECT * FROM OrdemDeServicos)
+    BEGIN
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (1, 1, 1, 1);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (2, 2, 2, 2);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (3, 3, 3, 3);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (4, 4, 4, 4);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (5, 5, 5, 5);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (6, 6, 6, 6);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (7, 7, 7, 7);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (8, 8, 8, 8);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (9, 9, 9, 9);
+        INSERT INTO OrdemDeServicos (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (10, 10, 10, 10);
     END
 
     -- Verificar e inserir dados na tabela Periodo
@@ -157,21 +172,6 @@ const iniciarBanco = async gerarDados => {
         INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-08-01', '2024-08-31', 160 , 8);
         INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-09-01', '2024-09-30', 150 , 9);
         INSERT INTO Periodos (DataInicio, DataFim, TempoTotal, OrdemId) VALUES ('2024-10-01', '2024-10-31', 160 , 10);
-    END
-
-    -- Verificar e inserir dados na tabela OrdemDeServicos
-    IF NOT EXISTS (SELECT * FROM OrdemDeServicos)
-    BEGIN
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (1, 1, 1, 1);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (2, 2, 2, 2);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (3, 3, 3, 3);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (4, 4, 4, 4);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (5, 5, 5, 5);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (6, 6, 6, 6);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (7, 7, 7, 7);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (8, 8, 8, 8);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (9, 9, 9, 9);
-        INSERT INTO OrdemDeServico (ProjetoID, ClienteID, FuncionarioID, AtividadeID) VALUES (10, 10, 10, 10);
     END
 
     -- Verificar e inserir dados na tabela Usuario

@@ -30,48 +30,83 @@ class PdfService{
     }
   }
 
+  async montarImagem(ordem) {
+    let browser;
+    try {
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
+
+      const page = await browser.newPage();
+      const htmlContent = this.montarHtml(this.defineHtml(), ordem);
+
+      await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+
+      // Defina o tamanho da página para caber todo o conteúdo
+      await page.evaluate(() => {
+        const body = document.body;
+        const width = body.scrollWidth;
+        const height = body.scrollHeight;
+        return { width, height };
+      });
+
+      // Gere a captura de tela
+      const screenshotBuffer = await page.screenshot({ fullPage: true });
+
+      return screenshotBuffer;
+    } catch (error) {
+      throw new Error('Erro ao gerar imagem: ' + error.message);
+    } finally {
+      if (browser) {
+        await browser.close();
+      }
+    }
+  }
+
   salvarLocalPdf(ordem, pdfBuffer){
     fs.writeFileSync(`os-log/os-${ordem.OrdemID}.pdf`, pdfBuffer);
   }
 
-  defineHtml(previa=false){
-    let htmlFilePath = path.join(__dirname, '../utils/previa.html');
-    if(previa === false){
-      htmlFilePath = path.join(__dirname, '../utils/template.html');
-    }
+  defineHtml(){
+    let htmlFilePath = path.join(__dirname, '../utils/template.html');
     return fs.readFileSync(htmlFilePath, 'utf8');
   }
 
   montarHtml(html,ordem){
-    const periodosHtml = ordem.Periodos.map(periodo =>
-      `
-            <div class="content-periodo">
-                <p><strong>Início:</strong> ${this.formatarDataHora(periodo.DataInicio)}</p>
-                <p><strong>Fim:</strong> ${this.formatarDataHora(periodo.DataFim)}</p>
-                <p><strong>Tempo Gasto:</strong> ${this.formatarTotal(periodo.TempoTotal)}</p>
-            </div>
+    try{
+      const periodosHtml = ordem.Periodos.map(periodo =>
         `
-    ).join('');
+              <div class="content-periodo">
+                  <p><strong>Início:</strong> ${this.formatarDataHora(periodo.DataInicio)}</p>
+                  <p><strong>Fim:</strong> ${this.formatarDataHora(periodo.DataFim)}</p>
+                  <p><strong>Tempo Gasto:</strong> ${this.formatarTotal(periodo.TempoTotal)}</p>
+              </div>
+          `
+      ).join('');
 
-    const imagePath = path.resolve(__dirname, '../utils/atak_sistemas_logo.jpeg');
-    const imageBuffer = fs.readFileSync(imagePath);
-    const base64Image = imageBuffer.toString('base64');
-    const imageSrc = `data:image/jpeg;base64,${base64Image}`;
-  
-    html = html.replace('atak_sistemas_logo.jpeg', imageSrc);
+      const imagePath = path.resolve(__dirname, '../utils/atak_sistemas_logo.jpeg');
+      const imageBuffer = fs.readFileSync(imagePath);
+      const base64Image = imageBuffer.toString('base64');
+      const imageSrc = `data:image/jpeg;base64,${base64Image}`;
+    
+      html = html.replace('atak_sistemas_logo.jpeg', imageSrc);
 
-    html = html.replace('{{OrdemID}}', ordem.OrdemID)
-              .replace('{{ClienteNome}}', ordem.Cliente.Nome)
-              .replace('{{ProjetoNome}}', ordem.Projeto.Nome)
-              .replace('{{ClienteCNPJ}}', ordem.Cliente.CNPJ)
-              .replace('{{FuncionarioNome}}', ordem.Funcionario.Nome)
-              .replace('{{AtividadeID}}', ordem.AtividadeID)
-              .replace('{{AtividadeNome}}', ordem.Atividade.Nome)
-              .replace('{{AtividadeDescricao}}', ordem.Atividade.Descricao)
-              .replace('{{TempoTotal}}', this.formatarTotal(ordem.Periodos.reduce((acc, periodo) => acc + periodo.TempoTotal, 0)))
-              .replace('{{#Periodos}}', periodosHtml);
+      html = html.replace('{{OrdemID}}', ordem.OrdemID)
+                .replace('{{ClienteNome}}', ordem.Cliente.Nome)
+                .replace('{{ProjetoNome}}', ordem.Projeto.Nome)
+                .replace('{{ClienteCNPJ}}', ordem.Cliente.CNPJ)
+                .replace('{{FuncionarioNome}}', ordem.Funcionario.Nome)
+                .replace('{{AtividadeID}}', ordem.AtividadeID)
+                .replace('{{AtividadeNome}}', ordem.Atividade.Nome)
+                .replace('{{AtividadeDescricao}}', ordem.Atividade.Descricao)
+                .replace('{{TempoTotal}}', this.formatarTotal(ordem.Periodos.reduce((acc, periodo) => acc + periodo.TempoTotal, 0)))
+                .replace('{{#Periodos}}', periodosHtml);
 
-    return html;
+      return html;
+    } catch (error) {
+      throw new Error('Erro ao montar PDF: ' + error.message);
+    }
   }
 
   formatarDataHora(data){
