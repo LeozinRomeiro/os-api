@@ -74,22 +74,24 @@ exports.gerarPrevia = async (req, res) => {
 
     let ordem = await ordemService.cadastrar({ idProjeto, idAtividade, idCliente, idTecnico});
 
-    let id = ordem.OrdemID
+    let ordemID = ordem.OrdemID
 
-    await periodoService.criar({dataInicio, dataFim, id})
+    await periodoService.criar({dataInicio, dataFim, ordemID})
 
-    ordem = await ordemService.buscarPorId(id)
+    ordem = await ordemService.buscarPorId(ordemID)
 
     if (!ordem) {
       return res.status(404).json({ message: 'Ordem de Serviço não encontrada' });
     }
 
-    const htmlContent = await pdfService.montarHtml(pdfService.defineHtml(true),{idProjeto, idAtividade, idCliente, idTecnico});
+    const imageBuffer = await pdfService.montarImagem(ordem);
 
-    res.setHeader('Content-Type', 'text/html');
-    res.send(htmlContent);
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Disposition', `inline; filename=ordem-servico-previa-${ordemID}.png`);
+    res.setHeader('Content-Length', imageBuffer.length);
+    res.end(imageBuffer, 'binary');
   } catch (error) {
-    console.error('Erro ao gerar prévia:', error);
+    console.error('Erro ao gerar imagem de prévia:', error);
     res.status(500).json({ message: error.message });
   }
 }
