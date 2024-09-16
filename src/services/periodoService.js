@@ -79,6 +79,27 @@ class PeridoService {
         }
     }
 
+    async buscarPorOrdemId(ordemID) {
+        try {
+            const cacheKey = `periodos_ordem_${ordemID}`;
+            let periodos = cache.get(cacheKey);
+
+            if (!periodos) {
+                periodos = await data.findAll({ where: { OrdemID: ordemID } });
+
+                if (periodos.length === 0) {
+                    throw new Error('Nenhum período encontrado para essa Ordem.');
+                }
+
+                cache.set(cacheKey, periodos);
+            }
+
+            return periodos;
+        } catch (error) {
+            throw new Error('Erro ao buscar períodos por Ordem: ' + error.message);
+        }
+    }
+
     calcularTotal(dto) {
         const diff = new Date(dto.dataFim) - new Date(dto.dataInicio);
         const totalHoras = diff / (1000 * 60 * 60);

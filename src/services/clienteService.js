@@ -80,10 +80,10 @@ class ClienteService {
     }
   }
 
-  informacoesCliente(cliente) {
-    const clienteInform = new Cliente(cliente)
-    return clienteInform
-  }
+  // informacoesCliente(cliente) {
+  //   const clienteInform = new Cliente(cliente)
+  //   return clienteInform
+  // }
 }
 
 module.exports = ClienteService

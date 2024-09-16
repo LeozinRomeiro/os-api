@@ -70,26 +70,48 @@ exports.gerarPdf = async (req, res) => {
 
 exports.gerarPrevia = async (req, res) => {
   try {
-    const { idProjeto, idAtividade, idCliente, idTecnico, dataInicio, dataFim} = req.body
+    let { idProjeto, idAtividade, idCliente, idTecnico, dataInicio, dataFim, idOrdem } = req.body;
 
-    let ordem = await ordemService.cadastrar({ idProjeto, idAtividade, idCliente, idTecnico});
-
-    let ordemID = ordem.OrdemID
-
-    await periodoService.criar({dataInicio, dataFim, ordemID})
-
-    ordem = await ordemService.buscarPorId(ordemID)
-
-    if (!ordem) {
-      return res.status(404).json({ message: 'Ordem de Serviço não encontrada' });
+    let ordem;
+    if (idOrdem) {
+      ordem = await ordemService.buscarPorId(idOrdem);
+      if (!ordem) {
+        return res.status(404).json({ message: 'Ordem de Serviço não encontrada' });
+      }
+      ordem = await ordemService.alterar(idOrdem,{ idProjeto, idAtividade, idCliente, idTecnico });
+      idOrdem = ordem.OrdemID
+      const periodos = await periodoService.buscarPorOrdemId(idOrdem)
+      for (let periodo = 0; periodo < periodos.length; periodo++) {
+        const PeriodoId = periodos[periodo].PeriodoID;
+        await periodoService.alterar(PeriodoId,{dataInicio, dataFim, ordemID: idOrdem})
+      }
+    } else {
+      ordem = await ordemService.cadastrar({ idProjeto, idAtividade, idCliente, idTecnico });
+      idOrdem = ordem.OrdemID
+      await periodoService.criar({dataInicio, dataFim, ordemID: idOrdem})
     }
+
+    ordem = await ordemService.buscarPorId(idOrdem);
 
     const imageBuffer = await pdfService.montarImagem(ordem);
 
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Disposition', `inline; filename=ordem-servico-previa-${ordemID}.png`);
+    if (!Buffer.isBuffer(imageBuffer)) {
+      throw new Error('A imagem retornada não é um buffer válido.');
+    }
+
+    const imagemBase64 = imageBuffer.toString('base64');
+
+    //res.setHeader('ordem-id', ordemID);
+    //res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Disposition', `inline; filename=ordem-servico-previa-${idOrdem}.png`);
     res.setHeader('Content-Length', imageBuffer.length);
-    res.end(imageBuffer, 'binary');
+
+    // Retorna o buffer da imagem
+    //res.end(imageBuffer, 'binary');
+    res.json({
+      ordemID: idOrdem,
+      imagem: `data:image/png;base64,${imagemBase64}`
+    });
   } catch (error) {
     console.error('Erro ao gerar imagem de prévia:', error);
     res.status(500).json({ message: error.message });
