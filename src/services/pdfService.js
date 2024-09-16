@@ -43,18 +43,27 @@ class PdfService{
 
       await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
 
-      // Defina o tamanho da página para caber todo o conteúdo
-      await page.evaluate(() => {
-        const body = document.body;
-        const width = body.scrollWidth;
-        const height = body.scrollHeight;
-        return { width, height };
+      const bodyHandle = await page.$('body');
+      const boundingBox = await bodyHandle.boundingBox();
+      await bodyHandle.dispose();
+  
+      const width = Math.ceil(boundingBox.width);
+      const height = Math.ceil(boundingBox.height);
+  
+      await page.setViewport({ width, height });
+  
+      const screenshot = await page.screenshot({
+        fullPage: true,
+        type: 'png' 
       });
+  
+      const buffer = Buffer.from(screenshot);
 
-      // Gere a captura de tela
-      const screenshotBuffer = await page.screenshot({ fullPage: true });
+      if(Buffer.isBuffer(buffer)){
+        throw new Error('Imagem gerada num formato incorreto')
+      }
 
-      return screenshotBuffer;
+      return buffer;
     } catch (error) {
       throw new Error('Erro ao gerar imagem: ' + error.message);
     } finally {

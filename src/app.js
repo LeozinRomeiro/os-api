@@ -24,7 +24,7 @@ const clientesRoutes = require('./routes/clienteRoute');
 app.use('/api/auth', authRoutes)
 app.use('/api/ordens', ordemRoutes)
 app.use('/api/usuarios', usuarioRoute)
-app.use('/api/atividade', atividadeRoutes)
+app.use('/api/atividades', atividadeRoutes)
 app.use('/api/clientes', clientesRoutes)
 app.use('/api/periodos', periodoRoutes)
 

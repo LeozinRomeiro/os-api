@@ -6,7 +6,7 @@ class AtividadeService {
     try {
       const atividade = await AtividadesSequelize.findAll()
 
-      return this.informacoesUsuario(atividade)
+      return atividade
     } catch (error) {
       throw new Error('Erro ao listar atividade: ' + error.message)
     }
@@ -113,6 +113,20 @@ class AtividadeService {
     const infoAtividade = new Atividade(atividade)
     return infoAtividade
   }
+
+  // listaInformacoesUsuario(atividades) {
+  //   let infoAtividades = [];
+  //   for (let atividade = 0; atividade < atividades.length; atividade++) {
+  //       let infoAtividade = new Atividade({
+  //           nome: atividades[atividade].Nome,
+  //           descricao: atividades[atividade].Descricao
+  //       });
+  //       infoAtividades.push(infoAtividade);
+  //   }
+  //   return infoAtividades;
+  // }
 }
+
+
 
 module.exports = AtividadeService

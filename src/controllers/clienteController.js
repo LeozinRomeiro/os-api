@@ -9,7 +9,7 @@ exports.cadastrar = async (req, res) => {
     await clienteService.validarUsuarioExistente(cnpj, nome, res)
 
     const cliente = await clienteService.cadastrar({ nome, cnpj })
-    res.status(201).send(clienteService.informacoesCliente(cliente))
+    res.status(201).send(cliente)
   } catch (Error) {
     res.status(400).send({ message: Error.message })
   }
@@ -19,7 +19,7 @@ exports.buscarTodos = async (req, res) => {
   try {
     const clientes = await clienteService.findAllClientes()
     const clientesMap = clientes.map(cliente =>
-      clienteService.informacoesCliente(cliente)
+      cliente
     )
     res.status(200).send(clientesMap)
   } catch (error) {
@@ -36,7 +36,7 @@ exports.buscarPorId = async (req, res) => {
       return res.send({ message: 'Cliente não encontrado com este Id' })
     }
 
-    res.status(200).send(clienteService.informacoesCliente(cliente))
+    res.status(200).send(cliente)
   } catch (error) {
     res.status(200).send({ message: error.message })
   }
@@ -51,7 +51,7 @@ exports.buscarPorCnpj = async (req, res) => {
       return res.send({ message: 'Cliente não encontrado com este CNPJ' })
     }
 
-    res.status(200).send(clienteService.informacoesCliente(cliente))
+    res.status(200).send(cliente)
   } catch (error) {
     res.status(400).send({ message: error.message })
   }

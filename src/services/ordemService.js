@@ -24,6 +24,22 @@ class OrdemService{
         }
     }
 
+    async alterar(id, dto){
+        try{
+
+            await data.update({               
+                FuncionarioID: dto.idTecnico,
+                ClienteID: dto.idCliente,
+                AtividadeID: dto.idAtividade,
+                ProjetoID: dto.idProjeto},{where: {OrdemID: id},},)
+
+            return this.buscarPorId(id)
+
+        } catch (error) {
+            throw new Error('Erro ao alterar ordem: ' + error.message);
+        }
+    }
+    
     async buscar(){
         try {
             const ordens = await data.findAll({                
