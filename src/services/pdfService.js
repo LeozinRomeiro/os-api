@@ -59,9 +59,9 @@ class PdfService{
   
       const buffer = Buffer.from(screenshot);
 
-      if(Buffer.isBuffer(buffer)){
-        throw new Error('Imagem gerada num formato incorreto')
-      }
+      // if(Buffer.isBuffer(buffer)){
+      //   throw new Error('Imagem gerada num formato incorreto')
+      // }
 
       return buffer;
     } catch (error) {
